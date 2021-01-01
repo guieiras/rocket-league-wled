@@ -27,6 +27,8 @@ window.addEventListener('load', function () {
 
     overwolf.games.events.onNewEvents.addListener(function ({ events }) {
       events.map((event) => {
+        if (event.name === 'teamGoal') { rocketLeague.celebrateGoal() }
+        if (event.name === 'opposingTeamGoal') { rocketLeague.regretGoal() }
       })
     });
   }
