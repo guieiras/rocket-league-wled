@@ -29,6 +29,8 @@ window.addEventListener('load', function () {
       events.map((event) => {
         if (event.name === 'teamGoal') { rocketLeague.celebrateGoal() }
         if (event.name === 'opposingTeamGoal') { rocketLeague.regretGoal() }
+        if (event.name === 'victory') { rocketLeague.victory() }
+        if (event.name === 'defeat') { rocketLeague.defeat() }
       })
     });
   }
