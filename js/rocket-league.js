@@ -21,8 +21,6 @@ class RocketLeague {
   closed() {
     this.logger.info('Rocket League', 'Closed')
     this.wled.request({ PL: 1 })
-
-    setTimeout(() => { overwolf.windows.getMainWindow().close() }, 5000)
   }
 
   lobby() {
