@@ -24,6 +24,11 @@ window.addEventListener('load', function () {
         if (info.matchInfo && info.matchInfo.gameType === null) { rocketLeague.lobby() }
       }
     });
+
+    overwolf.games.events.onNewEvents.addListener(function ({ events }) {
+      events.map((event) => {
+      })
+    });
   }
 
   function gameLaunched(gameInfoResult) {
