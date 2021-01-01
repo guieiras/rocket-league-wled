@@ -49,4 +49,28 @@ class RocketLeague {
       this.wled.request({ CL: 'he04a00', C2: 'h803302', C3: 'h000000', FX: 106, SX: 210, IX: 170 })
     }
   }
+
+  celebrateGoal() {
+    this.logger.info('Game', 'Our team scored')
+
+    if (this.info.team === 'blue') { this.blueTeamGoal() }
+    else if (this.info.team === 'orange') { this.orangeTeamGoal() }
+  }
+
+  regretGoal() {
+    this.logger.info('Game', 'Opposing team scored')
+
+    if (this.info.team === 'blue') { this.orangeTeamGoal() }
+    else if (this.info.team === 'orange') { this.blueTeamGoal() }
+  }
+
+  blueTeamGoal() {
+    this.logger.info('Game', 'Goal scored by blue team')
+    this.wled.request({ CL: 'h1400d6', C2: 'h002b6e', C3: 'h000000', FX: 54, SX: 255, IX: 75 })
+  }
+
+  orangeTeamGoal() {
+    this.logger.info('Game', 'Goal scored by orange team')
+    this.wled.request({ CL: 'he04a00', C2: 'h803302', C3: 'h000000', FX: 54, SX: 255, IX: 75 })
+  }
 }
