@@ -64,6 +64,24 @@ class RocketLeague {
     else if (this.info.team === 'orange') { this.blueTeamGoal() }
   }
 
+  victory() {
+    this.logger.info('Game', 'Victory')
+
+    if (this.info.team === 'blue') { this.blueWins() }
+    else if (this.info.team === 'orange') { this.orangeWins() }
+
+    setTimeout(() => { this.lobby() }, 20000)
+  }
+
+  defeat() {
+    this.logger.info('Game', 'Defeat')
+
+    if (this.info.team === 'blue') { this.orangeWins() }
+    else if (this.info.team === 'orange') { this.blueWins() }
+
+    setTimeout(() => { this.lobby() }, 20000)
+  }
+
   blueTeamGoal() {
     this.logger.info('Game', 'Goal scored by blue team')
     this.wled.request({ CL: 'h1400d6', C2: 'h002b6e', C3: 'h000000', FX: 54, SX: 255, IX: 75 })
@@ -72,5 +90,15 @@ class RocketLeague {
   orangeTeamGoal() {
     this.logger.info('Game', 'Goal scored by orange team')
     this.wled.request({ CL: 'he04a00', C2: 'h803302', C3: 'h000000', FX: 54, SX: 255, IX: 75 })
+  }
+
+  blueWins() {
+    this.logger.info('Game', 'Blue team wins')
+    this.wled.request({ CL: 'h1400d6', C2: 'h002b6e', C3: 'h000000', FX: 40, SX: 255, IX: 170 })
+  }
+
+  orangeWins() {
+    this.logger.info('Game', 'Orange team wins')
+    this.wled.request({ CL: 'he04a00', C2: 'h803302', C3: 'h000000', FX: 40, SX: 255, IX: 170 })
   }
 }
