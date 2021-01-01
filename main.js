@@ -14,7 +14,16 @@ window.addEventListener('load', function () {
   ];
 
   function registerEvents() {
-
+    overwolf.games.events.onInfoUpdates2.addListener(function ({ info, feature }) {
+      if (feature === 'me') {
+        if (info.me && info.me.team === '1') { rocketLeague.setBlueTeam() }
+        if (info.me && info.me.team === '2') { rocketLeague.setOrangeTeam() }
+      } else if (feature === 'match') {
+        if (info.matchInfo && info.matchInfo.gameState === 'Countdown') { rocketLeague.inGame() }
+        if (info.matchState && info.matchState.started === 'true') { rocketLeague.inGame() }
+        if (info.matchInfo && info.matchInfo.gameType === null) { rocketLeague.lobby() }
+      }
+    });
   }
 
   function gameLaunched(gameInfoResult) {
