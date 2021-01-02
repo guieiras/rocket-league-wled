@@ -1,8 +1,9 @@
 import WLED from '../modules/wled';
 
 interface Received {
-  info?: any;
-  event?: any;
+  feature?: string;
+  info?: Record<string, unknown>;
+  event?: Record<string, unknown>;
 }
 
 interface Dependencies {

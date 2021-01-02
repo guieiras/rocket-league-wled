@@ -7,8 +7,7 @@ export class AppWindow {
   protected mainWindow: OWWindow;
   protected maximized: boolean = false;
 
-  constructor(windowName) {
-    this.mainWindow = new OWWindow('background');
+  constructor(windowName: string) {
     this.currWindow = new OWWindow(windowName);
 
     const closeButton = document.getElementById('closeButton');
@@ -19,7 +18,7 @@ export class AppWindow {
     this.setDrag(header);
 
     closeButton.addEventListener('click', () => {
-      this.mainWindow.close();
+      this.currWindow.close();
     });
 
     minimizeButton.addEventListener('click', () => {

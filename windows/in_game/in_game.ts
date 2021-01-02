@@ -1,5 +1,6 @@
 import { AppWindow } from "../AppWindow";
 import { OWGamesEvents } from "../../odk-ts/ow-games-events";
+import { OWGameListener } from "../../odk-ts/ow-game-listener";
 import { OWHotkeys } from "../../odk-ts/ow-hotkeys";
 import { interestingFeatures, hotkeys, windowNames } from "../../consts";
 import Controller from "../../modules/controller";
@@ -10,6 +11,7 @@ import WindowState = overwolf.windows.WindowStateEx;
 // Like the background window, it also implements the Singleton design pattern.
 class InGame extends AppWindow {
   private static _instance: InGame;
+  private _rocketLeagueGameListener: OWGameListener;
   private _rocketLeagueGameEventsListener: OWGamesEvents;
   private _controller: Controller;
 
@@ -19,13 +21,16 @@ class InGame extends AppWindow {
     this.setToggleHotkeyBehavior();
     this.setToggleHotkeyText();
     this.setConfigurationSave();
+    this.resetController();
 
+    this._rocketLeagueGameListener = new OWGameListener({
+      onGameStarted: this.onGameStarted.bind(this),
+      onGameEnded: this.onGameEnded.bind(this)
+    });
     this._rocketLeagueGameEventsListener = new OWGamesEvents({
       onInfoUpdates: this.onInfoUpdates.bind(this),
       onNewEvents: this.onNewEvents.bind(this)
     }, interestingFeatures);
-
-    this.resetController();
   }
 
   public static instance() {
@@ -35,15 +40,24 @@ class InGame extends AppWindow {
   }
 
   public run() {
+    this._rocketLeagueGameListener.start();
     this._rocketLeagueGameEventsListener.start();
   }
 
-  private async onInfoUpdates(info) {
-    const isOnline = await this._controller.isOnline();
-    if (isOnline) { this._controller.info(info); }
+  private async onGameStarted() {
+    this._controller.started();
   }
 
-  private async onNewEvents(events) {
+  private async onGameEnded() {
+    this._controller.closed();
+  }
+
+  private async onInfoUpdates({ info, feature }) {
+    const isOnline = await this._controller.isOnline();
+    if (isOnline) { this._controller.info(info, feature); }
+  }
+
+  private async onNewEvents({ events }) {
     const isOnline = await this._controller.isOnline();
     if (isOnline) {
       events.forEach(event => { this._controller.event(event); });
@@ -95,6 +109,7 @@ class InGame extends AppWindow {
         stateBadge.classList.remove('state-badge-offline');
         stateBadge.classList.add('state-badge-online');
         stateText.innerHTML = 'Online';
+        this._controller.started();
       } else {
         stateBadge.classList.remove('state-badge-online');
         stateBadge.classList.add('state-badge-offline');
