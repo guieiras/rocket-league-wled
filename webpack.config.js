@@ -2,7 +2,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: {
-        background: './windows/background/background.ts',
         in_game: './windows/in_game/in_game.ts'
     },
     devtool: 'inline-source-map',
@@ -23,11 +22,6 @@ module.exports = {
       filename: '[name]/[name].js'
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: './windows/background/background.html',
-            filename: `${__dirname}/dist/background/background.html`,
-            chunks: ['background']
-        }),
         new HtmlWebpackPlugin({
             template: './windows/in_game/in_game.html',
             filename: `${__dirname}/dist/in_game/in_game.html`,

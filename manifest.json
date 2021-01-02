@@ -18,18 +18,14 @@
     "GameInfo"
   ],
   "data": {
-    "start_window": "background",
+    "start_window": "in_game",
     "windows": {
-      "background": {
-        "file": "dist/background/background.html",
-        "is_background_page": true
-      },
       "in_game": {
         "file": "dist/in_game/in_game.html",
         "in_game_only": true,
         "focus_game_takeover": "ReleaseOnHidden",
         "focus_game_takeover_release_hotkey": "showhide",
-        "resizable": true,
+        "resizable": false,
         "transparent": true,
         "override_on_update": true,
         "size": {
