@@ -1,4 +1,6 @@
 import WLED from '../modules/wled';
+import Lobby from './lobby';
+import GameClosed from './game-closed';
 
 interface Received {
   feature?: string;
@@ -14,4 +16,4 @@ interface Dependencies {
 export type CurrentInfo = { team: string; };
 export type Feature = ({ info, event }: Received, data: Dependencies) => void;
 
-export default [];
+export default [GameClosed, Lobby];
