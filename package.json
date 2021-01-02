@@ -5,12 +5,15 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode=development",
-    "dev": "webpack --watch --mode=development"
+    "buildpack": "npm run build && npm run pack",
+    "dev": "webpack --watch --mode=development",
+    "pack": "node pack.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "archiver": "^5.1.0",
     "html-webpack-plugin": "^4.5.0",
     "ts-loader": "^8.0.13",
     "typescript": "^4.1.3",
