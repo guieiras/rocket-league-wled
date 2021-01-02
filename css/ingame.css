@@ -29,6 +29,7 @@ h1 {
 
 .form-input {
   display: flex;
+  margin-bottom: 10px;
 }
 
 .form-input > label {
@@ -44,8 +45,24 @@ h1 {
 .save {
   align-self: center;
   border-radius: 5px;
-  margin-top: 10px;
   font-size: 15px;
   height: 32px;
   width: 105px;
+}
+
+.state-badge {
+  margin-right: 5px;
+  width: 10px;
+}
+
+.state-badge.state-badge-offline {
+  background-color: red;
+}
+
+.state-badge.state-badge-online {
+  background-color: green;
+}
+
+.state-text {
+  color: #d5d5d5;
 }

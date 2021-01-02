@@ -2,39 +2,34 @@ import { AppWindow } from "../AppWindow";
 import { OWGamesEvents } from "../../odk-ts/ow-games-events";
 import { OWHotkeys } from "../../odk-ts/ow-hotkeys";
 import { interestingFeatures, hotkeys, windowNames } from "../../consts";
+import Controller from "../../modules/controller";
+import Configuration from "../../modules/configuration";
 import WindowState = overwolf.windows.WindowStateEx;
 
-// The window displayed in-game while a rocketLeague game is running.
-// It listens to all info events and to the game events listed in the consts.ts file
-// and writes them to the relevant log using <pre> tags.
-// The window also sets up Ctrl+F as the minimize/restore hotkey.
+// The window displayed in-game while a Rocket League game is running.
 // Like the background window, it also implements the Singleton design pattern.
 class InGame extends AppWindow {
   private static _instance: InGame;
   private _rocketLeagueGameEventsListener: OWGamesEvents;
-  private _eventsLog: HTMLElement;
-  private _infoLog: HTMLElement;
+  private _controller: Controller;
 
   private constructor() {
     super(windowNames.inGame);
 
-    this._eventsLog = document.getElementById('eventsLog');
-    this._infoLog = document.getElementById('infoLog');
-
     this.setToggleHotkeyBehavior();
     this.setToggleHotkeyText();
+    this.setConfigurationSave();
 
     this._rocketLeagueGameEventsListener = new OWGamesEvents({
       onInfoUpdates: this.onInfoUpdates.bind(this),
       onNewEvents: this.onNewEvents.bind(this)
-    },
-      interestingFeatures);
+    }, interestingFeatures);
+
+    this.resetController();
   }
 
   public static instance() {
-    if (!this._instance) {
-      this._instance = new InGame();
-    }
+    if (!this._instance) { this._instance = new InGame(); }
 
     return this._instance;
   }
@@ -44,18 +39,16 @@ class InGame extends AppWindow {
   }
 
   private onInfoUpdates(info) {
-    this.logLine(this._infoLog, info, false);
   }
 
-  // Special events will be highlighted in the event log
-  private onNewEvents(e) {
-    const shouldHighlight = e.events.some(event => {
-      return event.name === 'kill' ||
-        event.name === 'death' ||
-        event.name === 'assist' ||
-        event.name === 'level'
-    });
-    this.logLine(this._eventsLog, e, shouldHighlight);
+  private onNewEvents(events) {
+  }
+
+  private saveConfiguration() {
+    const ipTextArea = <HTMLInputElement>document.getElementById('wled-ip');
+    Configuration.setWledIp(ipTextArea.value);
+
+    this.resetController();
   }
 
   // Displays the toggle minimize/restore hotkey in the window header
@@ -65,10 +58,9 @@ class InGame extends AppWindow {
     hotkeyElem.textContent = hotkeyText;
   }
 
-  // Sets toggleInGameWindow as the behavior for the Ctrl+F hotkey
+  // Sets toggleInGameWindow as the behavior for the hotkey
   private async setToggleHotkeyBehavior() {
-    const toggleInGameWindow = async hotkeyResult => {
-      console.log(`pressed hotkey for ${hotkeyResult.featureId}`);
+    const toggleInGameWindow = async () => {
       const inGameState = await this.getWindowState();
 
       if (inGameState.window_state === WindowState.NORMAL ||
@@ -83,24 +75,26 @@ class InGame extends AppWindow {
     OWHotkeys.onHotkeyDown(hotkeys.toggle, toggleInGameWindow);
   }
 
-  // Appends a new line to the specified log
-  private logLine(log: HTMLElement, data, highlight) {
-    console.log(`${log.id}:`);
-    console.log(data);
-    const line = document.createElement('pre');
-    line.textContent = JSON.stringify(data);
+  private setConfigurationSave() {
+    (<HTMLButtonElement>document.querySelector('.save')).addEventListener('click', () => this.saveConfiguration());
+  }
 
-    if (highlight) {
-      line.className = 'highlight';
-    }
+  private resetController() {
+    this._controller = new Controller(Configuration.getWledIp());
+    this._controller.isOnline().then((online) => {
+      const stateBadge = document.querySelector('.state-badge');
+      const stateText = document.querySelector('.state-text');
 
-    const shouldAutoScroll = (log.scrollTop + log.offsetHeight) > (log.scrollHeight - 10);
-
-    log.appendChild(line);
-
-    if (shouldAutoScroll) {
-      log.scrollTop = log.scrollHeight;
-    }
+      if (online) {
+        stateBadge.classList.remove('state-badge-offline');
+        stateBadge.classList.add('state-badge-online');
+        stateText.innerHTML = 'Online';
+      } else {
+        stateBadge.classList.remove('state-badge-online');
+        stateBadge.classList.add('state-badge-offline');
+        stateText.innerHTML = 'Offline';
+      }
+    });
   }
 }
 

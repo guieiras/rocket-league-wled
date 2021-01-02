@@ -1,4 +1,4 @@
-class WLED {
+export default class WLED {
   public ip: string;
   private httpApi: string;
   private jsonApi: string;
