@@ -38,10 +38,16 @@ class InGame extends AppWindow {
     this._rocketLeagueGameEventsListener.start();
   }
 
-  private onInfoUpdates(info) {
+  private async onInfoUpdates(info) {
+    const isOnline = await this._controller.isOnline();
+    if (isOnline) { this._controller.info(info); }
   }
 
-  private onNewEvents(events) {
+  private async onNewEvents(events) {
+    const isOnline = await this._controller.isOnline();
+    if (isOnline) {
+      events.forEach(event => { this._controller.event(event); });
+    }
   }
 
   private saveConfiguration() {
