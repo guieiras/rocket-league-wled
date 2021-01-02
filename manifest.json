@@ -1,40 +1,53 @@
 {
-  "manifest_version": "1",
+  "manifest_version": 1,
   "type": "WebApp",
   "meta": {
     "name": "Rocket League WLED integration",
     "version": "1.0.0.0",
     "minimum-overwolf-version": "0.97.208.0",
     "author": "Guilherme Eiras",
-    "icon": "icon.png",
-    "icon_gray": "icon_gray.png",
-    "description": "Apply effects on a LED strip using WLED based on Rocket League info and events"
+    "description": "Apply effects on a LED strip using WLED based on Rocket League info and events",
+    "dock_button_title": "Rocket League WLED",
+    "icon": "icons/IconMouseOver.png",
+    "icon_gray": "icons/IconMouseNormal.png",
+    "launcher_icon": "icons/TaskbarIcon.png",
+    "window_icon": "icons/TaskbarIcon.png"
   },
+  "permissions": [
+    "Hotkeys",
+    "GameInfo"
+  ],
   "data": {
-    "start_window": "index",
+    "start_window": "background",
     "windows": {
-      "index": {
-        "file": "index.html",
-        "transparent": false,
-        "clickthrough": false,
+      "background": {
+        "file": "dist/background/background.html",
+        "is_background_page": true
+      },
+      "in_game": {
+        "file": "dist/in_game/in_game.html",
+        "in_game_only": true,
+        "focus_game_takeover": "ReleaseOnHidden",
+        "focus_game_takeover_release_hotkey": "showhide",
         "resizable": true,
-        "show_in_taskbar": true,
+        "transparent": true,
+        "override_on_update": true,
         "size": {
-          "width": 150,
-          "height": 150
+          "width": 720,
+          "height": 600
         },
-        "start_position": {
-          "Top": 10,
-          "Left": 10
+        "min_size": {
+          "width": 720,
+          "height": 600
         }
       }
     },
-     "game_targeting": {
-        "type": "dedicated",
-        "game_ids": [
-          10798
-        ]
-      },
+    "game_targeting": {
+      "type": "dedicated",
+      "game_ids": [
+        10798
+      ]
+    },
     "game_events": [
       10798
     ],
@@ -48,6 +61,13 @@
         },
         "start_minimized": true
       }
-    ]
+    ],
+    "hotkeys": {
+      "showhide": {
+        "title": "Show/Hide In-Game Window",
+        "action-type": "toggle",
+        "default": "Ctrl+L"
+      }
+    }
   }
 }
