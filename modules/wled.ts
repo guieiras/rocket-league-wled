@@ -20,7 +20,7 @@ export default class WLED {
     }
   }
 
-  request(params: Map<string, string|number>) {
+  request(params: Record<string, string|number>) {
     fetch(`${this.httpApi}&${Object.entries(params).map(([k, v]) => `${k}=${v}`).join('&')}`)
   }
 }
