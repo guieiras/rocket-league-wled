@@ -86,7 +86,7 @@ class InGame extends AppWindow {
   }
 
   private resetController() {
-    this._controller = new Controller(Configuration.getWledIp());
+    this._controller = new Controller(Configuration.getWledIp(), this._controller?.currentInfo);
     this._controller.isOnline().then((online) => {
       const stateBadge = document.querySelector('.state-badge');
       const stateText = document.querySelector('.state-text');

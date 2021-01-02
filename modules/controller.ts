@@ -1,13 +1,15 @@
 import WLED from './wled';
-import features, { Feature } from '../features/index';
+import features, { CurrentInfo, Feature } from '../features/index';
 
 export default class Controller {
   private wled: WLED;
   private features: Feature[];
+  public currentInfo: CurrentInfo;
 
-  constructor(ip: string) {
+  constructor(ip: string, currentInfo?: CurrentInfo) {
     this.wled = new WLED(ip);
     this.features = features;
+    this.currentInfo = currentInfo || { team: '' };
   }
 
   isOnline() {
@@ -23,6 +25,6 @@ export default class Controller {
   }
 
   private data() {
-    return { wled: this.wled };
+    return { wled: this.wled, currentInfo: this.currentInfo };
   }
 }
