@@ -1,4 +1,5 @@
 import WLED from '../modules/wled';
+import Goal from './goal';
 import InGame from './ingame';
 import Lobby from './lobby';
 import GameClosed from './game-closed';
@@ -59,4 +60,4 @@ export class CurrentInfo {
 
 export type Feature = ({ info, event }: Received, data: Dependencies) => void;
 
-export default [GameClosed, Lobby, SetTeamColor, InGame];
+export default [GameClosed, Lobby, SetTeamColor, InGame, Goal];
