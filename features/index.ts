@@ -1,6 +1,8 @@
 import WLED from '../modules/wled';
+import InGame from './ingame';
 import Lobby from './lobby';
 import GameClosed from './game-closed';
+import SetTeamColor from './set-team-color';
 
 interface OwGameInfo extends Record<string, unknown> {
   matchInfo?: Record<string, unknown>;
@@ -20,4 +22,4 @@ interface Dependencies {
 export type CurrentInfo = { team: string; };
 export type Feature = ({ info, event }: Received, data: Dependencies) => void;
 
-export default [GameClosed, Lobby];
+export default [GameClosed, Lobby, SetTeamColor, InGame];
