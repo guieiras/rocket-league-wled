@@ -30,3 +30,21 @@ export function ingame(team: string) {
     IX: 170
   };
 };
+
+export function goal(team: string) {
+  return {
+    ...(team === 'orange' ? orangePalette : bluePalette),
+    FX: effect.triChase,
+    SX: 255,
+    IX: 75
+  };
+};
+
+export function win(team: string) {
+  return {
+    ...(team === 'orange' ? orangePalette : bluePalette),
+    FX: effect.scanner,
+    SX: 255,
+    IX: 170
+  };
+};

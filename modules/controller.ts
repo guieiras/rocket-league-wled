@@ -10,7 +10,7 @@ export default class Controller {
   constructor(ip: string, currentInfo?: CurrentInfo) {
     this.wled = new WLED(ip);
     this.modules = features;
-    this.currentInfo = currentInfo || { team: '' };
+    this.currentInfo = currentInfo || new CurrentInfo({ team: '' });
   }
 
   async isOnline(): Promise<boolean> {
