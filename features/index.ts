@@ -2,9 +2,13 @@ import WLED from '../modules/wled';
 import Lobby from './lobby';
 import GameClosed from './game-closed';
 
+interface OwGameInfo extends Record<string, unknown> {
+  matchInfo?: Record<string, unknown>;
+  matchState?: Record<string, unknown>;
+}
 interface Received {
   feature?: string;
-  info?: Record<string, unknown>;
+  info?: Record<string, OwGameInfo>;
   event?: Record<string, unknown>;
 }
 
