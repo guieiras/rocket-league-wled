@@ -4,6 +4,10 @@ import InGame from './ingame';
 import Lobby from './lobby';
 import GameClosed from './game-closed';
 import SetTeamColor from './set-team-color';
+import Win from './win';
+
+export type Feature = ({ info, event }: Received, data: Dependencies) => void;
+export default [GameClosed, Lobby, SetTeamColor, InGame, Goal, Win];
 
 interface Received {
   feature?: string;
@@ -57,7 +61,3 @@ export class CurrentInfo {
     return ColorTeam.None;
   };
 };
-
-export type Feature = ({ info, event }: Received, data: Dependencies) => void;
-
-export default [GameClosed, Lobby, SetTeamColor, InGame, Goal];
