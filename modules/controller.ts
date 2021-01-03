@@ -1,5 +1,5 @@
 import WLED from './wled';
-import features, { CurrentInfo, Feature } from '../features/index';
+import features, { CurrentInfo, Feature, OwGameInfo } from '../features/index';
 
 export default class Controller {
   public currentInfo: CurrentInfo;
@@ -22,7 +22,7 @@ export default class Controller {
     return connected;
   }
 
-  async info(info: Record<string, unknown>, feature: string) {
+  async info(info: Record<string, OwGameInfo>, feature: string) {
     if (!await this.isOnline()) { return; }
     this.modules.forEach((module) => { module({ feature, info }, this.data()) });
   }
